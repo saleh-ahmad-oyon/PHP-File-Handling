@@ -166,6 +166,7 @@
                         break;
                     case 'uploaderror':
                         $error = 'Sorry, there was an error uploading your file.';
+                        break;
                 }
                 echo '<label>**'.$error.'</label>';
             }
