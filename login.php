@@ -44,6 +44,8 @@ if (isset($_SESSION['usertoken'])) {
                 echo '<label>**'.$error.'</label>';
             }
             ?>
+            <br/><br/>
+            <label>Not a member? Please <a href="index.php">Sign Up</a></label>
         </section>
         <footer></footer>
     </body>

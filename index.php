@@ -171,6 +171,8 @@
                 echo '<label>**'.$error.'</label>';
             }
             ?>
+            <br/><br/>
+            <label>Already a member? Click <a href="login.php">here</a> to login</label>
         </section>
         <footer></footer>
     </body>
