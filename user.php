@@ -12,7 +12,6 @@ function getinfo($email)
             foreach ($user as $j => $u) {
                 $userinfo[explode('->', $user[$j])[0]] = explode('->', $user[$j])[1];
             }
-
             return $userinfo;
         }
     }
