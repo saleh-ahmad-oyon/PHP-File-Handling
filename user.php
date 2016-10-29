@@ -109,6 +109,44 @@ function getinfo($email)
     return false;
 }
 
+function updatePassword($oldpass, $newpass)
+{
+    $myfile = file('record.txt');
+    $flag   = false;
+
+    foreach ($myfile as $i => $data) {
+        $user   = explode('@#',$data);
+
+        $uemail = trim(explode('->', $user[5])[1]);
+
+        if ($uemail == $_SESSION['email']) {
+            $flag = true;
+
+            foreach ($user as $j => $u) {
+                $userinfo[explode('->', $user[$j])[0]] = explode('->', $user[$j])[1];
+            }
+
+            $userinfo['password'] = trim($userinfo['password']);
+
+            if ($userinfo['password'] != $oldpass) {
+                header('Location: changepass.php?err=oldpassword');
+                return false;
+            }
+
+            if (!preg_match('/(?=^.{9,}$)(?=.*[!@#$%^&*]+).*/', $newpass)) {
+                header('Location: changepass.php?err=validpass');
+                return false;
+            }
+
+            $hashpass = hash('sha256', $newpass);
+            $myfile[$i] = str_replace($userinfo['password'], $hashpass, $data);
+        }
+    }
+    file_put_contents('record.txt', implode('', $myfile));
+
+    return $flag;
+}
+
 /**
  * Update User Information
  *
