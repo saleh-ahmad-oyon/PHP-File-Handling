@@ -129,12 +129,17 @@ function updatePassword($oldpass, $newpass)
 
             $userinfo['password'] = trim($userinfo['password']);
 
+            /** Check if the old password is matched or not */
             if ($userinfo['password'] != $oldpass) {
                 header('Location: changepass.php?err=oldpassword');
                 $error = 'oldpassword';
                 break;
             }
 
+            /**
+             * check the password pattern
+             * pattern: must be greated than 8 in length and contains a special character
+             */
             if (!preg_match('/(?=^.{9,}$)(?=.*[!@#$%^&*]+).*/', $newpass)) {
                 $error = 'validpass';
                 break;

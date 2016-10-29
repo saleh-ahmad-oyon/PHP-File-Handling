@@ -45,7 +45,6 @@ if (!$propic) {
  * @arrayindex string $registerdata['phone']       Phone number of the user
  * @arrayindex string $registerdata['email']       Email of the user
  * @arrayindex string $registerdata['password']    Password of the user
- * @arrayindex string $registerdata['cpassword']   Confirm  password of the user
  * @arrayindex string $registerdata['imgname']     Profile Image name of the user
  */
 $registerdata = [
@@ -88,7 +87,7 @@ $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
 $check = getimagesize($propic['tmp_name']);
 
-/* check if the uploaded file is an image */
+/** check if the uploaded file is an image */
 if (!$check) {
     header('Location: index.php?err=notimage');
     return;
@@ -109,7 +108,7 @@ if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpe
     return;
 }
 
-/* if everything is ok, try to upload file */
+/** if everything is ok, try to upload file */
 if (!move_uploaded_file($propic["tmp_name"], $target_file)) {
     header('Location: index.php?err=uploaderror');
     return;
