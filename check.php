@@ -121,9 +121,10 @@ if (!storeinfo($registerdata)) {
     return;
 }
 
-/* Destroy $_SESSION['userdata'] where all requested data were stored */
+/** Destroy $_SESSION['userdata'] where all requested data were stored */
 unset($_SESSION['userdata']);
 
+/** @redirect login.php   User Login Page*/
 echo '<script language="javascript">
           alert("Successfully Registered !!");
           window.location="login.php";

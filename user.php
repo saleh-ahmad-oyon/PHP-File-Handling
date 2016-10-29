@@ -19,6 +19,15 @@ function checkRequired($fields)
     return true;
 }
 
+/**
+ * Store User Information
+ *
+ * Store user registration information to the file
+ *
+ * @param array $registerdata   requested data for registration
+ *
+ * @return bool
+ */
 function storeinfo($registerdata)
 {
     if (!is_array($registerdata)) {
@@ -39,6 +48,47 @@ function storeinfo($registerdata)
     fclose($myfile);
 }
 
+/**
+ * Check User Authentication
+ *
+ * Check if the user email and password are matched from the file
+ *
+ * @param string $email   User Email
+ * @param string $pass    User password
+ *
+ * @return bool
+ */
+function checklogin($email, $pass)
+{
+    $flag = false;
+
+    $myfile = fopen("record.txt", "r") or die("Unable to open file!");
+
+    while(!feof($myfile)) {
+        $user = explode('@#',fgets($myfile));
+
+        $uemail = trim(explode('->', $user[5])[1]);
+        $upass  = trim(explode('->', $user[7])[1]);
+
+        if ($uemail == $email && $upass == $pass) {
+            $flag = true;
+            break;
+        }
+    }
+    fclose($myfile);
+
+    return $flag;
+}
+
+/**
+ * Get User Information
+ *
+ * Get the user information from the file using user email
+ *
+ * @param string $email
+ *
+ * @return bool
+ */
 function getinfo($email)
 {
     $myfile = file('record.txt');
@@ -57,6 +107,15 @@ function getinfo($email)
     return false;
 }
 
+/**
+ * Update User Information
+ *
+ * Update user information in the file using user email
+ *
+ * @param array $userdata   Modified user information
+ *
+ * @return bool
+ */
 function updateInfo($userdata)
 {
     if (!is_array($userdata)) {
