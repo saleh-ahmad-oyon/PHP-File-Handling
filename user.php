@@ -46,6 +46,8 @@ function storeinfo($registerdata)
     $txt = "password->$hashpass\r\n";
     fwrite($myfile, $txt);
     fclose($myfile);
+
+    return true;
 }
 
 /**

@@ -68,7 +68,7 @@ if (!preg_match('/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,
 }
 
 /* check password and confirm password fileds are equal or not */
-if ($registerdata['password'] != $_REQUEST['cpassword']) {
+if ($registerdata['password'] != $_REQUEST['cpass']) {
     header('Location: index.php?err=passwordmatch');
     return;
 }
