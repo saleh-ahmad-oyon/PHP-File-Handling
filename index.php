@@ -167,6 +167,9 @@
                     case 'uploaderror':
                         $error = 'Sorry, there was an error uploading your file.';
                         break;
+                    case 'storeerror':
+                        $error = 'An error occurred.';
+                        break;
                 }
                 echo '<label>**'.$error.'</label>';
             }

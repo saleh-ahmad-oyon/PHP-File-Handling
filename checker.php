@@ -1,15 +1,8 @@
 <?php
 session_start();
 
-function checkRequired($fields)
-{
-    foreach ($fields as $field) {
-        if (empty($_REQUEST[$field])) {
-            return false;
-        }
-    }
-    return true;
-}
+/** Required Files */
+require_once 'user.php';
 
 if (!isset($_REQUEST['u-login'])) {
     header('Location: login.php');

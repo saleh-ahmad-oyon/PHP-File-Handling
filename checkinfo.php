@@ -1,17 +1,8 @@
 <?php
 session_start();
 
+/** Required Files */
 require_once 'user.php';
-
-function checkRequired($fields)
-{
-    foreach ($fields as $field) {
-        if (empty($_REQUEST[$field])) {
-            return false;
-        }
-    }
-    return true;
-}
 
 if (!isset($_REQUEST['edit-submit'])) {
     header('Location: index.php');

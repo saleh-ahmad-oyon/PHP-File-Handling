@@ -1,28 +1,25 @@
 <?php
 session_start();
 
-function checkRequired($fields)
-{
-    foreach ($fields as $field) {
-        if (empty($_REQUEST[$field])) {
-            return false;
-        }
-    }
-    return true;
-}
+/** Required Files */
+require_once 'user.php';
 
+/** check if the request came from signup page */
 if (!isset($_REQUEST['signup'])) {
     header('Location: index.php');
     return;
 }
 
+/** check if the requested methos is post */
 if ($_SERVER["REQUEST_METHOD"] != "POST") {
     header('Location: index.php');
     return;
 }
 
+/** store requested data on session */
 $_SESSION['userdata'] = $_REQUEST;
 
+/** check the required fields from the requested data */
 if (!checkRequired(['fname', 'lname', 'day', 'month', 'year', 'gender', 'phone', 'email', 'pass', 'cpass'])) {
     header('Location: index.php?err=fillfields');
     return;
@@ -30,75 +27,101 @@ if (!checkRequired(['fname', 'lname', 'day', 'month', 'year', 'gender', 'phone',
 
 $propic = (!empty($_FILES) && isset($_FILES['profpic']) && $_FILES['profpic']['error'] != 4) ? $_FILES['profpic'] : false;
 
+/** check if the requested data contains profile picture */
 if (!$propic) {
     header('Location: index.php?err=proilepic');
     return;
 }
 
-$fname     = $_REQUEST['fname'];
-$lname     = $_REQUEST['lname'];
-$day       = $_REQUEST['day'];
-$month     = $_REQUEST['month'];
-$year      = $_REQUEST['year'];
-$gender    = $_REQUEST['gender'];
-$phone     = $_REQUEST['phone'];
-$email     = $_REQUEST['email'];
-$password  = $_REQUEST['pass'];
-$cpassword = $_REQUEST['cpass'];
-$imgname   = $propic['name'];
+/**
+ * @var array $registerdata
+ *
+ * @arrayindex string $registerdata['fname']       First Name of the user
+ * @arrayindex string $registerdata['lname']       Last Name of the user
+ * @arrayindex int    $registerdata['day']         Day of Birth
+ * @arrayindex string $registerdata['month']       Month of Birth
+ * @arrayindex int    $registerdata['year']        Year of Birth
+ * @arrayindex string $registerdata['gender']      Gender of the user
+ * @arrayindex string $registerdata['phone']       Phone number of the user
+ * @arrayindex string $registerdata['email']       Email of the user
+ * @arrayindex string $registerdata['password']    Password of the user
+ * @arrayindex string $registerdata['cpassword']   Confirm  password of the user
+ * @arrayindex string $registerdata['imgname']     Profile Image name of the user
+ */
+$registerdata = [
+    'fname'     => $_REQUEST['fname'],
+    'lname'     => $_REQUEST['lname'],
+    'day'       => $_REQUEST['day'],
+    'month'     => $_REQUEST['month'],
+    'year'      => $_REQUEST['year'],
+    'gender'    => $_REQUEST['gender'],
+    'phone'     => $_REQUEST['phone'],
+    'email'     => $_REQUEST['email'],
+    'password'  => $_REQUEST['pass'],
+    'imgname'   => $propic['name']
+];
 
-if (!preg_match('/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/',$email)) {
+/* check the email pattern */
+if (!preg_match('/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/',$registerdata['email'])) {
     header('Location: index.php?err=email');
     return;
 }
 
-if ($password != $cpassword) {
+/* check password and confirm password fileds are equal or not */
+if ($registerdata['password'] != $_REQUEST['cpassword']) {
     header('Location: index.php?err=passwordmatch');
     return;
 }
 
-if (!preg_match('/(?=^.{9,}$)(?=.*[!@#$%^&*]+).*/', $password)) {
+/**
+ * check the password pattern
+ * pattern: must be greated than 8 in length and contains a special character
+ */
+if (!preg_match('/(?=^.{9,}$)(?=.*[!@#$%^&*]+).*/', $registerdata['password'])) {
     header('Location: index.php?err=validpass');
     return;
 }
 
 $target_dir    = 'profile_image/';
 $target_file   = $target_dir . basename($propic['name']);
-$uploadOk      = 1;
 $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 
 $check = getimagesize($propic['tmp_name']);
 
+/* check if the uploaded file is an image */
 if (!$check) {
     header('Location: index.php?err=notimage');
     return;
 }
 
+/**
+ * check if the size of the image is less than 500kb
+ * Sizes are all based in bytes
+ */
 if ($propic["size"] > 500000) {
     header('Location: index.php?err=filesize');
     return;
 }
 
+/** check if the image extension is jpg/png/jpeg/gif */
 if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
     header('Location: index.php?err=fileext');
     return;
 }
 
+/* if everything is ok, try to upload file */
 if (!move_uploaded_file($propic["tmp_name"], $target_file)) {
     header('Location: index.php?err=uploaderror');
     return;
 }
 
-$myfile = fopen("record.txt", "a") or die("Unable to open file!");
-$txt = "fname->$fname@#lname->$lname@#DOB->$day/$month/$year@#gender->$gender@#"
-."phone->$phone@#email->$email@#profile_image->$imgname@#";
-fwrite($myfile, $txt);
+/** Store User Information to the file */
+if (!storeinfo($registerdata)) {
+    header('Location: index.php?err=storeerror');
+    return;
+}
 
-$hashpass = hash('sha256', $password);
-
-$txt = "password->$hashpass\r\n";
-fwrite($myfile, $txt);
-fclose($myfile);
+/* Destroy $_SESSION['userdata'] where all requested data were stored */
 unset($_SESSION['userdata']);
 
 echo '<script language="javascript">

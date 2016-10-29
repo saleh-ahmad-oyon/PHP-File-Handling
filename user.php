@@ -1,5 +1,44 @@
 <?php
 
+/**
+ * Check required fields
+ *
+ * Check required fields from $_REQUEST
+ *
+ * @param  array $fields   $_REQUEST array elements
+ *
+ * @return bool
+ */
+function checkRequired($fields)
+{
+    foreach ($fields as $field) {
+        if (empty($_REQUEST[$field])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function storeinfo($registerdata)
+{
+    if (!is_array($registerdata)) {
+        return false;
+    }
+
+    $myfile = fopen("record.txt", "a") or die("Unable to open file!");
+    $txt = "fname->".$registerdata['fname']."@#lname->".$registerdata['lname']
+        ."@#DOB->".$registerdata['day']."/".$registerdata['month']."/".$registerdata['year']
+        ."@#gender->".$registerdata['gender']."@#phone->".$registerdata['phone']."@#email->".$registerdata['email']
+        ."@#profile_image->".$registerdata['imgname']."@#";
+    fwrite($myfile, $txt);
+
+    $hashpass = hash('sha256', $registerdata['password']);
+
+    $txt = "password->$hashpass\r\n";
+    fwrite($myfile, $txt);
+    fclose($myfile);
+}
+
 function getinfo($email)
 {
     $myfile = file('record.txt');
