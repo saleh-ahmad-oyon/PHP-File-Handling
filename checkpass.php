@@ -38,8 +38,9 @@ if ($newpass != $conirmnewpass) {
 }
 
 /** Update user password */
-if (!updatePassword($oldpass, $newpass)) {
-    header('Location: changepass.php?err=authentication');
+$error = updatePassword($oldpass, $newpass);
+if ($error) {
+    header('Location: changepass.php?err='.$error);
     return;
 }
 

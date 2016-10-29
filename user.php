@@ -113,6 +113,7 @@ function updatePassword($oldpass, $newpass)
 {
     $myfile = file('record.txt');
     $flag   = false;
+    $error  = false;
 
     foreach ($myfile as $i => $data) {
         $user   = explode('@#',$data);
@@ -130,21 +131,30 @@ function updatePassword($oldpass, $newpass)
 
             if ($userinfo['password'] != $oldpass) {
                 header('Location: changepass.php?err=oldpassword');
-                return false;
+                $error = 'oldpassword';
+                break;
             }
 
             if (!preg_match('/(?=^.{9,}$)(?=.*[!@#$%^&*]+).*/', $newpass)) {
-                header('Location: changepass.php?err=validpass');
-                return false;
+                $error = 'validpass';
+                break;
             }
 
             $hashpass = hash('sha256', $newpass);
             $myfile[$i] = str_replace($userinfo['password'], $hashpass, $data);
+
+            break;
         }
+
+        if ($flag) break;
     }
     file_put_contents('record.txt', implode('', $myfile));
 
-    return $flag;
+    if (!$flag) {
+        $error = 'updateerror';
+    }
+
+    return $error;
 }
 
 /**
