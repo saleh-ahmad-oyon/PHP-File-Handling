@@ -20,16 +20,20 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
 $_SESSION['logindata'] = $_REQUEST;
 
 /** check the required fields from the requested data */
-if (!checkRequired(['u-email', 'u-pass'])) {
+if (!checkRequired(['id', 'pass'])) {
     header('Location: login.php?err=fillfields');
     return;
 }
 
-$email = $_REQUEST['u-email'];
-$pass  = $_REQUEST['u-pass'];
+/**
+ * @var string $id     Given user id
+ * @var string $pass   Given user password
+ */
+$id   = $_REQUEST['id'];
+$pass = $_REQUEST['pass'];
 
-/** Check is the user is authenticated */
-if (!checklogin($email, $pass)) {
+/** Check if the user is authenticated */
+if (!checklogin($id, $pass)) {
     header('Location: login.php?err=invaliddata');
     return;
 }
@@ -42,7 +46,7 @@ unset($_SESSION['logindata']);
  * @var string $_SESSION['email']       User Email
  */
 $_SESSION['usertoken'] = uniqid('', true);
-$_SESSION['email']     = $email;
+$_SESSION['id']        = $id;
 
 /** @redirect home.php   User Home Page*/
 header('Location: home.php');

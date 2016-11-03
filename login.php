@@ -15,21 +15,24 @@ if (isset($_SESSION['usertoken'])) {
         </header>
         <section>
             <form action="checker.php" method="post">
-                <table border="1">
-                    <tr>
-                        <td>Email</td>
-                        <?php $email = isset($_SESSION['logindata']['u-email']) ? $_SESSION['logindata']['u-email'] : ''; ?>
-                        <td><input type="text" name="u-email" value="<?= $email ?>" required /></td>
-                    </tr>
-                    <tr>
-                        <td>Password</td>
-                        <?php $pass = isset($_SESSION['logindata']['u-pass']) ? $_SESSION['logindata']['u-pass'] : ''; ?>
-                        <td><input type="password" name="u-pass" value="<?= $pass ?>" required /></td>
-                    </tr>
-                    <tr style="text-align: center">
-                        <td colspan="2"><input type="submit" name="u-login" value="Login" /></td>
-                    </tr>
-                </table>
+                <fieldset style="display: inline-block;">
+                    <legend><h4>LOGIN</h4></legend>
+
+                    <?php $id = isset($_SESSION['logindata']['id']) ? $_SESSION['logindata']['id'] : ''; ?>
+                    <label>User Id</label><br/>
+                    <input type="text" name="id" value="<?= $id ?>" /><br/>
+
+                    <?php $pass = isset($_SESSION['logindata']['pass']) ? $_SESSION['logindata']['pass'] : ''; ?>
+                    <label>Password</label><br/>
+                    <input type="password" name="pass" value="<?= $pass ?>" /><br/><br/>
+
+                    <input type="checkbox" name="remember" /> Remember Me
+                    <hr/>
+
+                    <input type="submit" name="u-login" value="Login" />
+
+                    <a href="index.php">Register</a>
+                </fieldset>
             </form>
             <?php
             if (isset($_GET['err'])) {
@@ -44,8 +47,6 @@ if (isset($_SESSION['usertoken'])) {
                 echo '<label>**'.$error.'</label>';
             }
             ?>
-            <br/><br/>
-            <label>Not a member? Please <a href="index.php">Sign Up</a></label>
         </section>
         <footer></footer>
     </body>

@@ -53,14 +53,14 @@ function storeinfo($registerdata)
 /**
  * Check User Authentication
  *
- * Check if the user email and password are matched from the file
+ * Check if the user ID and password are matched from the file
  *
- * @param string $email   User Email
+ * @param string $id      User ID
  * @param string $pass    User password
  *
  * @return bool
  */
-function checklogin($email, $pass)
+function checklogin($id, $pass)
 {
     $flag = false;
 
@@ -69,10 +69,10 @@ function checklogin($email, $pass)
     while(!feof($myfile)) {
         $user = explode('@#',fgets($myfile));
 
-        $uemail = trim(explode('->', $user[5])[1]);
-        $upass  = trim(explode('->', $user[7])[1]);
+        $uid    = trim(explode('->', $user[0])[1]);
+        $upass  = trim(explode('->', $user[4])[1]);
 
-        if ($uemail == $email && password_verify(base64_encode(hash('sha256', $pass, true)), $upass)) {
+        if ($uid == $id && password_verify(base64_encode(hash('sha256', $pass, true)), $upass)) {
             $flag = true;
             break;
         }
