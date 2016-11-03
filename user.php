@@ -41,7 +41,7 @@ function storeinfo($registerdata)
         ."@#profile_image->".$registerdata['imgname']."@#";
     fwrite($myfile, $txt);
 
-    $hashpass = hash('sha256', $registerdata['password']);
+    $hashpass = password_hash(base64_encode(hash('sha256', $registerdata['password'], true)), PASSWORD_DEFAULT);;
 
     $txt = "password->$hashpass\r\n";
     fwrite($myfile, $txt);
@@ -72,7 +72,7 @@ function checklogin($email, $pass)
         $uemail = trim(explode('->', $user[5])[1]);
         $upass  = trim(explode('->', $user[7])[1]);
 
-        if ($uemail == $email && $upass == $pass) {
+        if ($uemail == $email && password_verify(base64_encode(hash('sha256', $pass, true)), $upass)) {
             $flag = true;
             break;
         }
@@ -130,7 +130,7 @@ function updatePassword($oldpass, $newpass)
             $userinfo['password'] = trim($userinfo['password']);
 
             /** Check if the old password is matched or not */
-            if ($userinfo['password'] != $oldpass) {
+            if (password_verify(base64_encode(hash('sha256', $oldpass, true)), $userinfo['password'])) {
                 header('Location: changepass.php?err=oldpassword');
                 $error = 'oldpassword';
                 break;
@@ -145,7 +145,7 @@ function updatePassword($oldpass, $newpass)
                 break;
             }
 
-            $hashpass = hash('sha256', $newpass);
+            $hashpass   = password_hash(base64_encode(hash('sha256', $newpass, true)), PASSWORD_DEFAULT);;
             $myfile[$i] = str_replace($userinfo['password'], $hashpass, $data);
 
             break;

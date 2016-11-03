@@ -26,7 +26,7 @@ if (!checkRequired(['u-email', 'u-pass'])) {
 }
 
 $email = $_REQUEST['u-email'];
-$pass  = hash('sha256', $_REQUEST['u-pass']);
+$pass  = $_REQUEST['u-pass'];
 
 /** Check is the user is authenticated */
 if (!checklogin($email, $pass)) {

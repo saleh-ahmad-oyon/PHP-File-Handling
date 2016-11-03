@@ -27,7 +27,7 @@ if (!checkRequired(['oldpass', 'newpass', 'confnewpass'])) {
  * @var string $newpass         User new password
  * @var string $conirmnewpass   User new password
  */
-$oldpass       = hash('sha256', $_REQUEST['oldpass']);
+$oldpass       = $_REQUEST['oldpass'];
 $newpass       = $_REQUEST['newpass'];
 $conirmnewpass = $_REQUEST['confnewpass'];
 
