@@ -21,7 +21,8 @@ if (!isset($_SESSION['usertoken'])) {
                             <label>Old Password</label>
                         </td>
                         <td>
-                            <input type="password" name="oldpass" />
+                            <?php $cpass = isset($_SESSION['userpass']['oldpass']) ? $_SESSION['userpass']['oldpass'] : ''; ?>
+                            <input type="password" name="oldpass" value="<?= $cpass ?>" />
                         </td>
                     </tr>
                     <tr>
@@ -29,7 +30,8 @@ if (!isset($_SESSION['usertoken'])) {
                             <label>New Password</label>
                         </td>
                         <td>
-                            <input type="password" name="newpass" />
+                            <?php $npass = isset($_SESSION['userpass']['newpass']) ? $_SESSION['userpass']['newpass'] : ''; ?>
+                            <input type="password" name="newpass" value="<?= $npass ?>" />
                         </td>
                     </tr>
                     <tr>
@@ -37,7 +39,8 @@ if (!isset($_SESSION['usertoken'])) {
                             <label>Confirm New Password</label>
                         </td>
                         <td>
-                            <input type="password" name="confnewpass" />
+                            <?php $cnpass = isset($_SESSION['userpass']['confnewpass']) ? $_SESSION['userpass']['confnewpass'] : ''; ?>
+                            <input type="password" name="confnewpass" value="<?= $cnpass ?>" />
                         </td>
                     </tr>
                     <tr>

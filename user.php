@@ -109,6 +109,16 @@ function getinfo($email)
     return false;
 }
 
+/**
+ * @param string $oldpass     Provided User old Password
+ * @param string $newpass     Provided User new Password
+ *
+ * Update user password
+ *
+ * Update user password in the file using user email
+ *
+ * @return bool|string
+ */
 function updatePassword($oldpass, $newpass)
 {
     $myfile = file('record.txt');
@@ -127,10 +137,8 @@ function updatePassword($oldpass, $newpass)
                 $userinfo[explode('->', $user[$j])[0]] = explode('->', $user[$j])[1];
             }
 
-            $userinfo['password'] = trim($userinfo['password']);
-
             /** Check if the old password is matched or not */
-            if (password_verify(base64_encode(hash('sha256', $oldpass, true)), $userinfo['password'])) {
+            if (!password_verify(base64_encode(hash('sha256', $oldpass, true)), trim($userinfo['password']))) {
                 header('Location: changepass.php?err=oldpassword');
                 $error = 'oldpassword';
                 break;

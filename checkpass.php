@@ -16,6 +16,9 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
     return;
 }
 
+/** store requested data on session */
+$_SESSION['userpass'] = $_REQUEST;
+
 /** check the required fields from the requested data */
 if (!checkRequired(['oldpass', 'newpass', 'confnewpass'])) {
     header('Location: changepass.php?err=fillfields');
@@ -43,6 +46,9 @@ if ($error) {
     header('Location: changepass.php?err='.$error);
     return;
 }
+
+/** Destroy $_SESSION['logindata'] where all requested data were stored */
+unset($_SESSION['userpass']);
 
 /** @redirect home.php   User Home Page*/
 echo '<script language="javascript">
