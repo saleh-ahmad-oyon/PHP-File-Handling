@@ -9,7 +9,6 @@ require_once 'user.php';
 if (!($userinfo = getinfo($_SESSION['id']))) {
     die('An Error Occurred!!');
 }
-;
 ?>
 <!doctype html>
 <html lang="en">
@@ -24,7 +23,7 @@ if (!($userinfo = getinfo($_SESSION['id']))) {
             <a href="profile.php">Profile</a><br/>
             <a href="changepass.php">Change Password</a><br/>
             <?php if($userinfo['type'] == 'Admin'): ?>
-            <a href="#">View Users</a><br/>
+            <a href="alluser.php">View Users</a><br/>
             <?php endif; ?>
             <a href="signout.php">Logout</a>
             <br/><br/><br/>

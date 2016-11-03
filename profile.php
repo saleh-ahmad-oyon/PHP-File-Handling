@@ -9,7 +9,6 @@ require_once 'user.php';
 if (!($userinfo = getinfo($_SESSION['id']))) {
     die('An Error Occurred!!');
 }
-;
 ?>
 <!doctype html>
 <html lang="en">
@@ -19,7 +18,7 @@ if (!($userinfo = getinfo($_SESSION['id']))) {
     <body>
         <header></header>
         <section>
-            <table border="1"style="border-collapse: collapse;">
+            <table border="1" style="border-collapse: collapse;">
                 <tr>
                     <th colspan="2" style="text-align: center;">Profile</th>
                 </tr>
@@ -40,7 +39,7 @@ if (!($userinfo = getinfo($_SESSION['id']))) {
                     <td><?= $userinfo['type']; ?></td>
                 </tr>
                 <tr>
-                    <td colspan="2" style="text-align: right" ">
+                    <td colspan="2" style="text-align: right">
                         <a href="home.php">Go Home</a>
                     </td>
                 </tr>

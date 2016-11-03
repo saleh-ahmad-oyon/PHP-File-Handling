@@ -89,22 +89,33 @@ function checklogin($id, $pass)
  *
  * @param string $id
  *
- * @return bool
+ * @return array
  */
-function getinfo($id)
+function getinfo($id = false)
 {
-    $myfile = file('record.txt');
+    $myfile   = file('record.txt');
+    $userinfo = [];
 
     foreach ($myfile as $i => $data) {
-        $user   = explode('@#',$data);
-        $uid = trim(explode('->', $user[0])[1]);
+        $user = explode('@#',$data);
 
-        if ($uid == $id) {
+        if (!$id) {
             foreach ($user as $j => $u) {
-                $userinfo[explode('->', $user[$j])[0]] = explode('->', $user[$j])[1];
+                $userinfo[$i][explode('->', $user[$j])[0]] = explode('->', $user[$j])[1];
             }
-            return $userinfo;
+
+        } else {
+            $uid = trim(explode('->', $user[0])[1]);
+            if ($uid == $id) {
+                foreach ($user as $j => $u) {
+                    $userinfo[explode('->', $user[$j])[0]] = explode('->', $user[$j])[1];
+                }
+                return $userinfo;
+            }
         }
+    }
+    if (!$id) {
+        return $userinfo;
     }
     return false;
 }
