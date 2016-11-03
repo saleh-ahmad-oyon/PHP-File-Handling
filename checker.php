@@ -25,10 +25,14 @@ if (!checkRequired(['u-email', 'u-pass'])) {
     return;
 }
 
+/**
+ * @var string $email     Given User Email
+ * @var string $pass      Given User Password
+ */
 $email = $_REQUEST['u-email'];
 $pass  = $_REQUEST['u-pass'];
 
-/** Check is the user is authenticated */
+/** Check if the user is authenticated */
 if (!checklogin($email, $pass)) {
     header('Location: login.php?err=invaliddata');
     return;
