@@ -20,54 +20,36 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
 $_SESSION['userdata'] = $_REQUEST;
 
 /** check the required fields from the requested data */
-if (!checkRequired(['fname', 'lname', 'day', 'month', 'year', 'gender', 'phone', 'email', 'pass', 'cpass'])) {
+if (!checkRequired(['id', 'pass', 'cpass', 'name', 'email', 'type'])) {
     header('Location: index.php?err=fillfields');
-    return;
-}
-
-$propic = (!empty($_FILES) && isset($_FILES['profpic']) && $_FILES['profpic']['error'] != 4) ? $_FILES['profpic'] : false;
-
-/** check if the requested data contains profile picture */
-if (!$propic) {
-    header('Location: index.php?err=proilepic');
     return;
 }
 
 /**
  * @var array $registerdata
  *
- * @arrayindex string $registerdata['fname']       First Name of the user
- * @arrayindex string $registerdata['lname']       Last Name of the user
- * @arrayindex int    $registerdata['day']         Day of Birth
- * @arrayindex string $registerdata['month']       Month of Birth
- * @arrayindex int    $registerdata['year']        Year of Birth
- * @arrayindex string $registerdata['gender']      Gender of the user
- * @arrayindex string $registerdata['phone']       Phone number of the user
- * @arrayindex string $registerdata['email']       Email of the user
- * @arrayindex string $registerdata['password']    Password of the user
- * @arrayindex string $registerdata['imgname']     Profile Image name of the user
+ * @arrayindex string $registerdata['id']      ID of the user
+ * @arrayindex string $registerdata['pass']    Password of the user
+ * @arrayindex string $registerdata['name']    Name of the user
+ * @arrayindex string $registerdata['email']   Email of the user
+ * @arrayindex string $registerdata['type']    Type of the user
  */
 $registerdata = [
-    'fname'     => $_REQUEST['fname'],
-    'lname'     => $_REQUEST['lname'],
-    'day'       => $_REQUEST['day'],
-    'month'     => $_REQUEST['month'],
-    'year'      => $_REQUEST['year'],
-    'gender'    => $_REQUEST['gender'],
-    'phone'     => $_REQUEST['phone'],
-    'email'     => $_REQUEST['email'],
-    'password'  => $_REQUEST['pass'],
-    'imgname'   => $propic['name']
+    'id'    => $_REQUEST['id'],
+    'pass'  => $_REQUEST['pass'],
+    'name'  => $_REQUEST['name'],
+    'email' => $_REQUEST['email'],
+    'type'  => $_REQUEST['type'],
 ];
 
-/* check the email pattern */
-if (!preg_match('/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/',$registerdata['email'])) {
-    header('Location: index.php?err=email');
+/** check the ID pattern */
+if (!preg_match('/^\d{2}\-\d{5}\-\d{1}$/',$registerdata['id'])) {
+    header('Location: index.php?err=iderror');
     return;
 }
 
 /* check password and confirm password fileds are equal or not */
-if ($registerdata['password'] != $_REQUEST['cpass']) {
+if ($registerdata['pass'] != $_REQUEST['cpass']) {
     header('Location: index.php?err=passwordmatch');
     return;
 }
@@ -76,41 +58,14 @@ if ($registerdata['password'] != $_REQUEST['cpass']) {
  * check the password pattern
  * pattern: must be greated than 8 in length and contains a special character
  */
-if (!preg_match('/(?=^.{9,}$)(?=.*[!@#$%^&*]+).*/', $registerdata['password'])) {
+if (!preg_match('/(?=^.{9,}$)(?=.*[!@#$%^&*]+).*/', $registerdata['pass'])) {
     header('Location: index.php?err=validpass');
     return;
 }
 
-$target_dir    = 'profile_image/';
-$target_file   = $target_dir . basename($propic['name']);
-$imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
-
-$check = getimagesize($propic['tmp_name']);
-
-/** check if the uploaded file is an image */
-if (!$check) {
-    header('Location: index.php?err=notimage');
-    return;
-}
-
-/**
- * check if the size of the image is less than 500kb
- * Sizes are all based in bytes
- */
-if ($propic["size"] > 500000) {
-    header('Location: index.php?err=filesize');
-    return;
-}
-
-/** check if the image extension is jpg/png/jpeg/gif */
-if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) {
-    header('Location: index.php?err=fileext');
-    return;
-}
-
-/** if everything is ok, try to upload file */
-if (!move_uploaded_file($propic["tmp_name"], $target_file)) {
-    header('Location: index.php?err=uploaderror');
+/* check the email pattern */
+if (!preg_match('/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/',$registerdata['email'])) {
+    header('Location: index.php?err=email');
     return;
 }
 

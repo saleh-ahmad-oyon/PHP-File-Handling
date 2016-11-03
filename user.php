@@ -35,13 +35,13 @@ function storeinfo($registerdata)
     }
 
     $myfile = fopen("record.txt", "a") or die("Unable to open file!");
-    $txt = "fname->".$registerdata['fname']."@#lname->".$registerdata['lname']
-        ."@#DOB->".$registerdata['day']."/".$registerdata['month']."/".$registerdata['year']
-        ."@#gender->".$registerdata['gender']."@#phone->".$registerdata['phone']."@#email->".$registerdata['email']
-        ."@#profile_image->".$registerdata['imgname']."@#";
+    $txt = "id->".$registerdata['id']
+        ."@#name->".$registerdata['name']
+        ."@#email->".$registerdata['email']
+        ."@#type->".$registerdata['type']."@#";
     fwrite($myfile, $txt);
 
-    $hashpass = password_hash(base64_encode(hash('sha256', $registerdata['password'], true)), PASSWORD_DEFAULT);;
+    $hashpass = password_hash(base64_encode(hash('sha256', $registerdata['pass'], true)), PASSWORD_DEFAULT);;
 
     $txt = "password->$hashpass\r\n";
     fwrite($myfile, $txt);
