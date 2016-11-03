@@ -6,11 +6,11 @@ if (!isset($_SESSION['usertoken'])) {
 
 require_once 'user.php';
 
-if (!getinfo($_SESSION['email'])) {
+if (!($userinfo = getinfo($_SESSION['email']))) {
     die('An Error Occurred!!');
 }
-$userinfo = getinfo($_SESSION['email']);
-$DOB      = explode('/', $userinfo['DOB']);
+;
+$DOB = explode('/', $userinfo['DOB']);
 ?>
 
 <!doctype html>
