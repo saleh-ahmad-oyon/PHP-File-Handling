@@ -89,7 +89,7 @@ function checklogin($id, $pass)
  *
  * @param string $id
  *
- * @return array
+ * @return array|bool
  */
 function getinfo($id = false)
 {
@@ -120,6 +120,16 @@ function getinfo($id = false)
     return false;
 }
 
+/**
+ * @param string $oldpass     Provided User old Password
+ * @param string $newpass     Provided User new Password
+ *
+ * Update user password
+ *
+ * Update user password in the file using user id
+ *
+ * @return bool|string
+ */
 function updatePassword($oldpass, $newpass)
 {
     $myfile = file('record.txt');
@@ -129,9 +139,9 @@ function updatePassword($oldpass, $newpass)
     foreach ($myfile as $i => $data) {
         $user   = explode('@#',$data);
 
-        $uemail = trim(explode('->', $user[5])[1]);
+        $uid = trim(explode('->', $user[0])[1]);
 
-        if ($uemail == $_SESSION['email']) {
+        if ($uid == $_SESSION['id']) {
             $flag = true;
 
             foreach ($user as $j => $u) {
@@ -171,58 +181,4 @@ function updatePassword($oldpass, $newpass)
     }
 
     return $error;
-}
-
-/**
- * Update User Information
- *
- * Update user information in the file using user email
- *
- * @param array $userdata   Modified user information
- *
- * @return bool
- */
-function updateInfo($userdata)
-{
-    if (!is_array($userdata)) {
-        return false;
-    }
-
-    $myfile = file('record.txt');
-    $flag   = false;
-
-    foreach ($myfile as $i => $data) {
-        $user   = explode('@#',$data);
-
-        $uemail = trim(explode('->', $user[5])[1]);
-
-        if ($uemail == $_SESSION['email']) {
-            $flag = true;
-
-            foreach ($user as $j => $u) {
-                $userinfo[explode('->', $user[$j])[0]] = explode('->', $user[$j])[1];
-            }
-
-            $DOB = [$userdata['day'], $userdata['month'], $userdata['year']];
-            $dob = implode('/', $DOB);
-            $pic = $userdata['propic'] ? $userdata['propic'] : $userinfo['profile_image'];
-
-            $myfile[$i] = str_replace($userinfo['fname'], $userdata['fname'],
-                str_replace($userinfo['lname'], $userdata['lname'],
-                    str_replace($userinfo['DOB'], $dob,
-                        str_replace($userinfo['gender'], $userdata['gender'],
-                            str_replace($userinfo['phone'], $userdata['phone'],
-                                str_replace($userinfo['email'], $userdata['email'],
-                                    str_replace($userinfo['profile_image'], $pic, $data)))))));
-
-            break;
-        }
-
-        if ($flag) break;
-    }
-    file_put_contents('record.txt', implode('', $myfile));
-
-    $_SESSION['email'] = $userdata['email'];
-
-    return $flag ? true : false;
 }

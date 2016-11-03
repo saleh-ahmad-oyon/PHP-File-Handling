@@ -16,8 +16,11 @@ if ($_SERVER["REQUEST_METHOD"] != "POST") {
     return;
 }
 
+/** store requested data on session */
+$_SESSION['userpass'] = $_REQUEST;
+
 /** check the required fields from the requested data */
-if (!checkRequired(['oldpass', 'newpass', 'confnewpass'])) {
+if (!checkRequired(['currentpass', 'newpass', 'renewpass'])) {
     header('Location: changepass.php?err=fillfields');
     return;
 }
@@ -27,9 +30,9 @@ if (!checkRequired(['oldpass', 'newpass', 'confnewpass'])) {
  * @var string $newpass         User new password
  * @var string $conirmnewpass   User new password
  */
-$oldpass       = $_REQUEST['oldpass'];
+$oldpass       = $_REQUEST['currentpass'];
 $newpass       = $_REQUEST['newpass'];
-$conirmnewpass = $_REQUEST['confnewpass'];
+$conirmnewpass = $_REQUEST['renewpass'];
 
 /* check new password and confirm new password fileds are equal or not */
 if ($newpass != $conirmnewpass) {
@@ -43,6 +46,9 @@ if ($error) {
     header('Location: changepass.php?err='.$error);
     return;
 }
+
+/** Destroy $_SESSION['logindata'] where all requested data were stored */
+unset($_SESSION['userpass']);
 
 /** @redirect home.php   User Home Page*/
 echo '<script language="javascript">

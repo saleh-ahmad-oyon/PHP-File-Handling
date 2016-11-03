@@ -15,37 +15,26 @@ if (!isset($_SESSION['usertoken'])) {
         </header>
         <section>
             <form action="checkpass.php" method="post">
-                <table border="1">
-                    <tr>
-                        <td>
-                            <label>Old Password</label>
-                        </td>
-                        <td>
-                            <input type="password" name="oldpass" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>New Password</label>
-                        </td>
-                        <td>
-                            <input type="password" name="newpass" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label>Confirm New Password</label>
-                        </td>
-                        <td>
-                            <input type="password" name="confnewpass" />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2" style="text-align: center">
-                            <input type="submit" name="passchange" />
-                        </td>
-                    </tr>
-                </table>
+                <fieldset style="display: inline-block;">
+                    <legend><h4>CHANGE PASSWORD</h4></legend>
+
+                    <?php $cpass = isset($_SESSION['userpass']['currentpass']) ? $_SESSION['userpass']['currentpass'] : ''; ?>
+                    <label>Current Password</label><br/>
+                    <input type="password" name="currentpass" value="<?= $cpass ?>" /><br/>
+
+                    <?php $npass = isset($_SESSION['userpass']['newpass']) ? $_SESSION['userpass']['newpass'] : ''; ?>
+                    <label>New Password</label><br/>
+                    <input type="password" name="newpass" value="<?= $npass ?>" /><br/>
+
+                    <?php $rnpass = isset($_SESSION['userpass']['renewpass']) ? $_SESSION['userpass']['renewpass'] : ''; ?>
+                    <label>Retype New Password</label><br/>
+                    <input type="password" name="renewpass" value="<?= $rnpass ?>" />
+
+                    <hr/>
+
+                    <input type="submit" value="Change" name="passchange" />
+                    <a href="home.php">Home</a>
+                </fieldset>
             </form>
             <?php
             if (isset($_GET['err'])) {
@@ -56,8 +45,8 @@ if (!isset($_SESSION['usertoken'])) {
                     case 'passwordmatch':
                         $error = 'Provided new password must be same.';
                         break;
-                    case 'authentication':
-                        $error = 'Authentication error.';
+                    case 'updateerror':
+                        $error = 'An error occurred.';
                         break;
                     case 'oldpassword':
                         $error = 'Provided old password is incorrect.';
