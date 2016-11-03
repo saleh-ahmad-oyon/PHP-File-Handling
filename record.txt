@@ -1,1 +1,1 @@
-id->13-22222-1@#name->John Doe@#email->john@doe.com@#type->user@#password->$2y$10$gjffI3SkZ5VwSs5BGmhrnuSvPyOkuG8R457p/hvZjSyy1csss2vhe
+id->13-22222-1@#name->John Doe@#email->john@doe.com@#type->User@#password->$2y$10$gjffI3SkZ5VwSs5BGmhrnuSvPyOkuG8R457p/hvZjSyy1csss2vhe

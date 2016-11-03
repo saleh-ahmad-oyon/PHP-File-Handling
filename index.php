@@ -34,8 +34,8 @@
                     <?php $type = isset($_SESSION['userdata']['type']) ? $_SESSION['userdata']['type'] : ''; ?>
                     <label>User Type <i>[User/Admin]</i></label><br/>
                     <select name="type">
-                        <option selected value="user">User</option>
-                        <option <?= $type == 'admin' ? 'selected' : ''; ?> value="admin">Admin</option>
+                        <option selected value="User">User</option>
+                        <option <?= $type == 'Admin' ? 'selected' : ''; ?> value="Admin">Admin</option>
                     </select>
 
                     <hr/>

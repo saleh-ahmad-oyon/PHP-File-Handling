@@ -85,21 +85,21 @@ function checklogin($id, $pass)
 /**
  * Get User Information
  *
- * Get the user information from the file using user email
+ * Get the user information from the file using user ID
  *
- * @param string $email
+ * @param string $id
  *
  * @return bool
  */
-function getinfo($email)
+function getinfo($id)
 {
     $myfile = file('record.txt');
 
     foreach ($myfile as $i => $data) {
         $user   = explode('@#',$data);
-        $uemail = trim(explode('->', $user[5])[1]);
+        $uid = trim(explode('->', $user[0])[1]);
 
-        if ($uemail == $email) {
+        if ($uid == $id) {
             foreach ($user as $j => $u) {
                 $userinfo[explode('->', $user[$j])[0]] = explode('->', $user[$j])[1];
             }
