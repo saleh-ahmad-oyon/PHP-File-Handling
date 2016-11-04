@@ -149,6 +149,9 @@
                     case 'email':
                         $error = 'Please insert a valid email.';
                         break;
+                    case 'emailexist':
+                        $error = 'Email already exist.';
+                        break;
                     case 'passwordmatch':
                         $error = 'Both password fields must be matched.';
                         break;

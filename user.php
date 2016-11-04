@@ -20,6 +20,35 @@ function checkRequired($fields)
 }
 
 /**
+ * @param string $email     Given User Email
+ *
+ * Check if the Email is unique
+ *
+ * Check the given Email while registering a user
+ *
+ * @return bool
+ */
+function checkUniqueEmail($email)
+{
+    $flag = true;
+
+    $myfile = fopen("record.txt", "r") or die("Unable to open file!");
+
+    while(!feof($myfile)) {
+        $user    = explode('@#',fgets($myfile));
+        $uemail  = trim(explode('->', $user[5])[1]);
+
+        if ($uemail == $email) {
+            $flag = false;
+            break;
+        }
+    }
+    fclose($myfile);
+
+    return $flag;
+}
+
+/**
  * Store User Information
  *
  * Store user registration information to the file
