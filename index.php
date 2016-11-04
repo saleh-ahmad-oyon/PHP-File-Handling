@@ -54,6 +54,9 @@
                     case 'iderror':
                         $error = 'Please enter a valid ID.';
                         break;
+                    case 'idexist':
+                        $error = 'User ID already exist.';
+                        break;
                     case 'email':
                         $error = 'Please insert a valid email.';
                         break;

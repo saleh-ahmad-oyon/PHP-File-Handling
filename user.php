@@ -20,6 +20,35 @@ function checkRequired($fields)
 }
 
 /**
+ * @param string $id     Given User ID
+ *
+ * Check if the ID is unique
+ *
+ * Check the given ID while registering a user
+ *
+ * @return bool
+ */
+function checkUniqueID($id)
+{
+    $flag = true;
+
+    $myfile = fopen("record.txt", "r") or die("Unable to open file!");
+
+    while(!feof($myfile)) {
+        $user = explode('@#',fgets($myfile));
+        $uid  = trim(explode('->', $user[0])[1]);
+
+        if ($uid == $id) {
+            $flag = false;
+            break;
+        }
+    }
+    fclose($myfile);
+
+    return $flag;
+}
+
+/**
  * Store User Information
  *
  * Store user registration information to the file

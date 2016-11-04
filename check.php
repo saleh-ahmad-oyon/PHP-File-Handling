@@ -48,6 +48,11 @@ if (!preg_match('/^\d{2}\-\d{5}\-\d{1}$/',$registerdata['id'])) {
     return;
 }
 
+if (!checkUniqueID($registerdata['id'])) {
+    header('Location: index.php?err=idexist');
+    return;
+}
+
 /* check password and confirm password fileds are equal or not */
 if ($registerdata['pass'] != $_REQUEST['cpass']) {
     header('Location: index.php?err=passwordmatch');
