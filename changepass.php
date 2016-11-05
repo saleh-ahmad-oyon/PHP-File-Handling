@@ -67,8 +67,6 @@ if (!isset($_SESSION['usertoken'])) {
                 echo '<label>**'.$error.'</label>';
             }
             ?>
-            <br/><br/>
-            <a href="home.php">Home</a>
         </section>
     </body>
 </html>
