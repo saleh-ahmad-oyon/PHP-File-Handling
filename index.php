@@ -29,7 +29,7 @@
 
                     <?php $email = isset($_SESSION['userdata']['email']) ? $_SESSION['userdata']['email'] : ''; ?>
                     <label>Email</label><br/>
-                    <input type="email" name="email" value="<?= $email ?>" /><br/>
+                    <input type="text" name="email" value="<?= $email ?>" /><br/>
 
                     <?php $type = isset($_SESSION['userdata']['type']) ? $_SESSION['userdata']['type'] : ''; ?>
                     <label>User Type <i>[User/Admin]</i></label><br/>

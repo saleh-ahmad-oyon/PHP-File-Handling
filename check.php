@@ -69,7 +69,7 @@ if (!preg_match('/(?=^.{9,}$)(?=.*[!@#$%^&*]+).*/', $registerdata['pass'])) {
 }
 
 /* check the email pattern */
-if (!preg_match('/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/',$registerdata['email'])) {
+if (!filter_var($registerdata['email'], FILTER_VALIDATE_EMAIL)) {
     header('Location: index.php?err=email');
     return;
 }
