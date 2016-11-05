@@ -1,7 +1,16 @@
 <?php
 session_start();
-if (!isset($_SESSION['usertoken'])) {
+
+/** If cookie or session is not set redirect to login page */
+if (!isset($_COOKIE['usertoken']) && !isset($_SESSION['usertoken'])) {
     header('Location: login.php');
+    exit;
+}
+
+/** If session is not set assign the cookie value to the session */
+if (!isset($_SESSION['usertoken'])) {
+    $_SESSION['usertoken'] = $_COOKIE['usertoken'];
+    $_SESSION['id']        = $_COOKIE['id'];
 }
 ?>
 <!doctype html>

@@ -48,5 +48,11 @@ unset($_SESSION['logindata']);
 $_SESSION['usertoken'] = uniqid('', true);
 $_SESSION['id']        = $id;
 
+/** If remember is checked, set cookie for 30 days */
+if (isset($_REQUEST['remember'])) {
+    setcookie('usertoken', $_SESSION['usertoken'], time() + (3600 * 24 * 30), "/");
+    setcookie('id', $_SESSION['id'], time() + (3600 * 24 * 30), "/");
+}
+
 /** @redirect home.php   User Home Page*/
 header('Location: home.php');
