@@ -60,18 +60,19 @@ $registerdata = [
     'imgname'   => $propic['name']
 ];
 
-/* check the email pattern */
-if (!preg_match('/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/',$registerdata['email'])) {
+/** check the email pattern */
+if (!filter_var($registerdata['email'], FILTER_VALIDATE_EMAIL)) {
     header('Location: index.php?err=email');
     return;
 }
 
+/** check if the email is used before */
 if (!checkUniqueEmail($registerdata['email'])) {
     header('Location: index.php?err=emailexist');
     return;
 }
 
-/* check password and confirm password fileds are equal or not */
+/** check password and confirm password fileds are equal or not */
 if ($registerdata['password'] != $_REQUEST['cpass']) {
     header('Location: index.php?err=passwordmatch');
     return;
