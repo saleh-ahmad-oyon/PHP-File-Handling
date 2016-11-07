@@ -40,6 +40,15 @@ if ($newpass != $conirmnewpass) {
     return;
 }
 
+/**
+ * check the password pattern
+ * pattern: must be greated than 8 in length and contains a special character
+ */
+if (!preg_match('/(?=^.{9,}$)(?=.*[!@#$%^&*]+).*/', $newpass)) {
+    header('Location: changepass.php?err=validpass');
+    return;
+}
+
 /** Update user password */
 $error = updatePassword($oldpass, $newpass);
 if ($error) {
