@@ -190,7 +190,7 @@ function updatePassword($oldpass, $newpass)
 
         if ($flag) break;
     }
-    file_put_contents('record.txt', implode('', $myfile));
+    file_put_contents('record.txt', implode("\r\n", $myfile));
 
     if (!$flag) {
         $error = 'updateerror';
@@ -246,7 +246,7 @@ function updateInfo($userdata)
 
         if ($flag) break;
     }
-    file_put_contents('record.txt', implode('', $myfile));
+    file_put_contents('record.txt', implode("\r\n", $myfile));
 
     $_SESSION['email'] = $userdata['email'];
 
