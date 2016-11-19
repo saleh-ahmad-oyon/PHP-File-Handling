@@ -183,14 +183,15 @@ function updatePassword($oldpass, $newpass)
             }
 
             $hashpass   = password_hash(base64_encode(hash('sha256', $newpass, true)), PASSWORD_DEFAULT);;
-            $myfile[$i] = str_replace($userinfo['password'], $hashpass, $data);
+            $myfile[$i] = str_replace(trim($userinfo['password']), $hashpass, $data);
 
             break;
         }
 
         if ($flag) break;
     }
-    file_put_contents('record.txt', implode("\r\n", $myfile));
+
+    file_put_contents('record.txt', implode("", $myfile));
 
     if (!$flag) {
         $error = 'updateerror';
@@ -246,7 +247,7 @@ function updateInfo($userdata)
 
         if ($flag) break;
     }
-    file_put_contents('record.txt', implode("\r\n", $myfile));
+    file_put_contents('record.txt', implode("", $myfile));
 
     $_SESSION['email'] = $userdata['email'];
 
