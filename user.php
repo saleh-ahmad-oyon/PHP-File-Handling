@@ -70,7 +70,12 @@ function storeinfo($registerdata)
         ."@#profile_image->".$registerdata['imgname']."@#";
     fwrite($myfile, $txt);
 
-    $hashpass = password_hash(base64_encode(hash('sha256', $registerdata['password'], true)), PASSWORD_DEFAULT);;
+    $options = [
+        'cost' => 11,
+        'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+    ];
+
+    $hashpass = password_hash(base64_encode(hash('sha256', $registerdata['password'], true)), PASSWORD_DEFAULT, $options);;
 
     $txt = "password->$hashpass\r\n";
     fwrite($myfile, $txt);
