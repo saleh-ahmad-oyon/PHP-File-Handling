@@ -187,7 +187,11 @@ function updatePassword($oldpass, $newpass)
                 break;
             }
 
-            $hashpass   = password_hash(base64_encode(hash('sha256', $newpass, true)), PASSWORD_DEFAULT);;
+            $options = [
+                'cost' => 11,
+                'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM),
+            ];
+            $hashpass   = password_hash(base64_encode(hash('sha256', $newpass, true)), PASSWORD_DEFAULT, $options);;
             $myfile[$i] = str_replace(trim($userinfo['password']), $hashpass, $data);
 
             break;
